@@ -45,12 +45,16 @@ class TwitterBootstrapFormFor::FormBuilder < ActionView::Helpers::FormBuilder
   # and the appropriate markup. All toggle buttons should be rendered
   # inside of here, and will not look correct unless they are.
   #
-  def toggles(label = nil, &block)
-    template.content_tag(:div, :class => "clearfix") do
-      template.concat template.content_tag(:label, label)
-      template.concat template.content_tag(:div, :class => "input") {
-        template.content_tag(:ul, :class => "inputs-list") { block.call }
-      }
+  def toggles(attribute = nil, label = nil, &block)
+    self.div_wrapper(attribute, :class => "clearfix" ) do
+      # extra div makes css work
+      template.content_tag(:div) do
+        template.concat template.content_tag(:label, label)
+        template.concat template.content_tag(:div, :class => "input") {
+          template.concat template.content_tag(:ul, :class => "inputs-list") { block.call }
+          template.concat template.content_tag(:span, self.errors_for(attribute), :class => 'help-inline') if self.errors_on?(attribute)
+        }
+      end
     end
   end
 
