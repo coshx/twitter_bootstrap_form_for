@@ -39,13 +39,13 @@ class TwitterBootstrapFormFor::FormBuilder < ActionView::Helpers::FormBuilder
   # inside of here, and will not look correct unless they are.
   #
   def toggles(label = nil, attribute = nil, &block)
-    div_wrapper(attribute) do
+    div_wrapper(attribute || :nil) do
       # extra div makes css work
       template.concat template.content_tag(:div) {
         template.concat template.content_tag(:label, label)
         template.concat template.content_tag(:div, :class => "input") {
           template.concat template.content_tag(:ul, :class => "inputs-list") { block.call }
-          template.concat error_span(attribute)
+          template.concat error_span(attribute) if attribute
         }
       }
     end
